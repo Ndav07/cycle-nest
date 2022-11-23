@@ -1,26 +1,45 @@
 import { Injectable } from '@nestjs/common'
+
+import { Repository } from 'typeorm'
+import { InjectRepository } from '@nestjs/typeorm'
+
+import { BankAccount } from './entities/bank-account.entity'
 import { CreateBankAccountDto } from './dto/create-bank-account.dto'
-import { UpdateBankAccountDto } from './dto/update-bank-account.dto'
 
 @Injectable()
 export class BankAccountsService {
-  create(createBankAccountDto: CreateBankAccountDto) {
-    return 'This action adds a new bankAccount'
+  constructor(
+    @InjectRepository(BankAccount)
+    private readonly repository: Repository<BankAccount>
+  ) {}
+
+  async create(createBankAccountDto: CreateBankAccountDto) {
+    const bankAccount = this.repository.create({
+      account_number: createBankAccountDto.account_number,
+      balance: 0,
+    })
+    await this.repository.insert(bankAccount)
+    return bankAccount
   }
 
-  findAll() {
-    return `This action returns all bankAccounts`
+  async findAll() {
+    return await this.repository.find()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bankAccount`
+  async findOne(id: string) {
+    return await this.repository.findOneBy({ id })
   }
 
-  update(id: number, updateBankAccountDto: UpdateBankAccountDto) {
-    return `This action updates a #${id} bankAccount`
-  }
+  async transfer(from: string, to: string, amount: number) {
+    const fromAccount = await this.repository.findOneBy({
+      account_number: from,
+    })
+    const toAccount = await this.repository.findOneBy({ account_number: to })
 
-  remove(id: number) {
-    return `This action removes a #${id} bankAccount`
+    fromAccount.balance -= amount
+    toAccount.balance += amount
+
+    this.repository.save(fromAccount)
+    this.repository.save(toAccount)
   }
 }
