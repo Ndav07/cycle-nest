@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
-export class BankAccount {
+export class BankAccountSchemaTypeOrm {
   @PrimaryGeneratedColumn('uuid')
   id: string
 

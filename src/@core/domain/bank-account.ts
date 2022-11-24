@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'uuid'
+
 export class BankAccount {
   id: string
 
@@ -5,9 +7,9 @@ export class BankAccount {
 
   account_number: string
 
-  constructor(id: string, balance: number, account_number: string) {
-    this.id = id
-    this.balance = balance
+  constructor(account_number: string, balance?: number, id?: string) {
+    this.id = id ?? uuid()
+    this.balance = balance ?? 0
     this.account_number = account_number
   }
 

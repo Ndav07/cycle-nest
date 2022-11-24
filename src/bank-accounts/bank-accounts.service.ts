@@ -3,14 +3,14 @@ import { Inject, Injectable } from '@nestjs/common'
 import { DataSource, Repository } from 'typeorm'
 import { getDataSourceToken, InjectRepository } from '@nestjs/typeorm'
 
-import { BankAccount } from './entities/bank-account.entity'
+import { BankAccountSchemaTypeOrm } from '../@core/infra/db/bank-account.schema'
 import { CreateBankAccountDto } from './dto/create-bank-account.dto'
 
 @Injectable()
 export class BankAccountsService {
   constructor(
-    @InjectRepository(BankAccount)
-    private readonly repository: Repository<BankAccount>,
+    @InjectRepository(BankAccountSchemaTypeOrm)
+    private readonly repository: Repository<BankAccountSchemaTypeOrm>,
     @Inject(getDataSourceToken())
     private readonly dataSource: DataSource
   ) {}

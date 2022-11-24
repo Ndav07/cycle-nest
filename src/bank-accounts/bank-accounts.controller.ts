@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Param, HttpCode } from '@nestjs/common'
+import { BankAccountService } from 'src/@core/domain/bank-account.service'
 
 import { BankAccountsService } from './bank-accounts.service'
 import { CreateBankAccountDto } from './dto/create-bank-account.dto'
@@ -6,11 +7,16 @@ import { TransferBankAccountDto } from './dto/transfer-bank-account.dto'
 
 @Controller('bank-accounts')
 export class BankAccountsController {
-  constructor(private readonly bankAccountsService: BankAccountsService) {}
+  constructor(
+    private readonly bankAccountsService: BankAccountsService,
+    private readonly bankAccountService: BankAccountService
+  ) {}
 
   @Post()
   async create(@Body() createBankAccountDto: CreateBankAccountDto) {
-    return await this.bankAccountsService.create(createBankAccountDto)
+    return await this.bankAccountService.create(
+      createBankAccountDto.account_number
+    )
   }
 
   @Get()
@@ -26,7 +32,7 @@ export class BankAccountsController {
   @HttpCode(204)
   @Post('transfer')
   async transfer(@Body() transferDto: TransferBankAccountDto) {
-    await this.bankAccountsService.transfer(
+    await this.bankAccountService.transfer(
       transferDto.from,
       transferDto.to,
       transferDto.amount
