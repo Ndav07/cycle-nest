@@ -1,14 +1,14 @@
 import { DataSource, Repository } from 'typeorm'
 
-import { BankAccountSchemaTypeOrm } from '../infra/db/bank-account.schema'
-import { BankAccountTypeOrmRepository } from '../infra/db/bank-account-typeorm.repository'
-import { BankAccountService } from './bank-account.service'
+import { BankAccountSchemaTypeOrm } from '../../../../infra/db/bankAccountTypeORM/schema/bank-account.schema'
+import { BankAccountTypeOrmRepository } from '../../../../infra/db/bankAccountTypeORM/repository/bank-account-typeorm.repository'
+import { CreateBankAccountService } from './create-bank-account.service'
 
 describe('BankAccountService Test', () => {
   let dataSouce: DataSource
   let ormRepository: Repository<BankAccountSchemaTypeOrm>
   let repository: BankAccountTypeOrmRepository
-  let bankAccountService: BankAccountService
+  let bankAccountService: CreateBankAccountService
 
   beforeEach(async () => {
     dataSouce = new DataSource({
@@ -20,7 +20,7 @@ describe('BankAccountService Test', () => {
     await dataSouce.initialize()
     ormRepository = dataSouce.getRepository(BankAccountSchemaTypeOrm)
     repository = new BankAccountTypeOrmRepository(ormRepository)
-    bankAccountService = new BankAccountService(repository)
+    bankAccountService = new CreateBankAccountService(repository)
   })
 
   it('should create a new bank account', async () => {

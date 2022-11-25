@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
-import { BankAccountsModule } from './bank-accounts/bank-accounts.module'
-import { BankAccountSchemaTypeOrm } from './@core/infra/db/bank-account.schema'
+import { BankAccountsModule } from './nestjs/bank-accounts/bank-accounts.module'
+import { BankAccountSchemaTypeOrm } from './@core/infra/db/bankAccountTypeORM/schema/bank-account.schema'
 
 @Module({
   imports: [
@@ -16,7 +14,5 @@ import { BankAccountSchemaTypeOrm } from './@core/infra/db/bank-account.schema'
     }),
     BankAccountsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
